@@ -1,0 +1,2112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SF 360° | Central de Suporte</title>
+
+  <style>
+    :root {
+      font-family: Arial, sans-serif;
+      color: #243b53;
+      background: #f4f6f8;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+    }
+
+    header {
+      background: #102a43;
+      color: white;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    header small {
+      display: block;
+      color: #dceaf4;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 200px minmax(0, 1fr);
+      min-height: 90vh;
+    }
+
+    nav {
+      background: #173852;
+      padding: 10px;
+    }
+
+    nav button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      border: 0;
+      background: transparent;
+      color: white;
+      padding: 11px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    nav button:hover,
+    nav button.ativo {
+      background: #1d4e78;
+    }
+
+    main {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1, h2, h3 {
+      color: #102a43;
+    }
+
+    h1 {
+      font-size: 24px;
+    }
+
+    h2 {
+      font-size: 19px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #dceaf4;
+      border-radius: 10px;
+      padding: 18px;
+      margin-bottom: 15px;
+    }
+
+    .aviso {
+      background: #fff5d6;
+      border-left: 4px solid #bc921e;
+      padding: 12px;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+
+    .erro {
+      background: #ffe7e7;
+      border-left-color: #b42318;
+    }
+
+    .sucesso {
+      background: #e5f7e9;
+      border-left-color: #2f855a;
+    }
+
+    .campo {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    input,
+    select,
+    textarea,
+    button {
+      font: inherit;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 9px;
+      border: 1px solid #bcccdc;
+      border-radius: 6px;
+      background: white;
+      color: #243b53;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .texto-extraido {
+      min-height: 240px;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .botao {
+      background: #1d4e78;
+      color: white;
+      border: 1px solid #1d4e78;
+      border-radius: 6px;
+      padding: 9px 13px;
+      font-weight: bold;
+    }
+
+    .secundario {
+      background: white;
+      color: #1d4e78;
+    }
+
+    .acoes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0;
+    }
+
+    .tabela {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 9px;
+      border-bottom: 1px solid #dceaf4;
+      vertical-align: top;
+    }
+
+    th {
+      color: #627d98;
+      font-size: 12px;
+    }
+
+    .texto {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .muted {
+      color: #627d98;
+    }
+
+    .historico {
+      border-left: 3px solid #dceaf4;
+      padding-left: 10px;
+      margin: 12px 0;
+    }
+
+    .oculto {
+      display: none !important;
+    }
+
+    .login-container {
+      max-width: 450px;
+      margin: 35px auto;
+      padding: 0 15px;
+    }
+
+    @media (max-width: 700px) {
+      .layout {
+        display: block;
+      }
+
+      nav {
+        display: flex;
+        overflow-x: auto;
+      }
+
+      nav button {
+        width: auto;
+        white-space: nowrap;
+      }
+
+      main {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div>
+      <strong>🐼 SF 360°</strong>
+      <small>Central de Suporte</small>
+    </div>
+
+    <div id="area-usuario" class="oculto">
+      <span id="nome-conectado"></span>
+      <button id="botao-sair" class="botao secundario" type="button">
+        Sair
+      </button>
+    </div>
+  </header>
+
+  <div id="tela-login" class="login-container">
+    <div class="card">
+      <h1>Entrar no SF 360°</h1>
+      <p class="muted">Use a conta criada pela administração.</p>
+
+      <div id="erro-login" aria-live="polite"></div>
+
+      <form id="form-login">
+        <div class="campo">
+          <label for="email-login">E-mail</label>
+          <input
+            id="email-login"
+            type="email"
+            autocomplete="username"
+            required
+          >
+        </div>
+
+        <div class="campo">
+          <label for="senha-login">Senha</label>
+          <input
+            id="senha-login"
+            type="password"
+            autocomplete="current-password"
+            required
+          >
+        </div>
+
+        <button id="botao-entrar" class="botao" type="submit">
+          Entrar
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div id="aplicacao" class="layout oculto">
+    <nav aria-label="Menu principal">
+      <button type="button" data-pagina="chamados">
+        Meus chamados
+      </button>
+
+      <button type="button" data-pagina="novo">
+        Novo chamado
+      </button>
+
+      <button
+        type="button"
+        data-pagina="fila"
+        id="menu-fila"
+        class="oculto"
+      >
+        Todos os chamados
+      </button>
+
+      <button
+        type="button"
+        data-pagina="importar"
+        id="menu-importar"
+        class="oculto"
+      >
+        Importar PDF
+      </button>
+
+      <button
+        type="button"
+        data-pagina="orientacoes"
+        id="menu-orientacoes"
+        class="oculto"
+      >
+        Gerenciar orientações
+<button
+  type="button"
+  data-pagina="analise"
+  id="menu-analise"
+  class="oculto"
+>
+  Análise e Qualificação
+</button>
+    </nav>
+
+    <main>
+      <div id="alerta" aria-live="polite"></div>
+      <div id="conteudo"></div>
+    </main>
+  </div>
+
+  <!-- Chave pública apenas. Nunca use service_role ou secret no HTML. -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- PDF.js: extração de texto no navegador. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+  <script>
+    "use strict";
+
+    const SUPABASE_URL =
+      "https://shhgpzeqarubmhltcodl.supabase.co";
+
+    const SUPABASE_PUBLIC_KEY =
+      "sb_publishable_3K6aSNkloIEHh3nLNq83Pg_aZkKh5KY";
+
+    const PDF_WORKER_URL =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+    const unidades = [
+      "Policlínica Metropolitana",
+      "Policlínica Carajás",
+      "Policlínica Tucuruí",
+      "Policlínica Santarém",
+      "HPEG",
+      "HRSP",
+      "HEMIM"
+    ];
+
+    const statusPermitidos = [
+      "Aguardando suporte",
+      "Em atendimento",
+      "Aguardando complementação",
+      "Concluído"
+    ];
+
+    const conteudo = document.getElementById("conteudo");
+    const alerta = document.getElementById("alerta");
+
+    let cliente = null;
+    let usuarioAtual = null;
+    let perfilAtual = null;
+    let paginaAtual = "chamados";
+    let chamadoAtual = null;
+    let carregamentoAtual = 0;
+
+    function esc(valor) {
+      return String(valor ?? "").replace(
+        /[&<>"']/g,
+        caractere => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#039;"
+        })[caractere]
+      );
+    }
+
+    function formatarData(valor) {
+      if (!valor) return "";
+
+      const data = new Date(valor);
+
+      if (Number.isNaN(data.getTime())) {
+        return String(valor);
+      }
+
+      return data.toLocaleString("pt-BR");
+    }
+
+    function mostrarAlerta(mensagem, tipo = "erro") {
+      alerta.innerHTML = `
+        <div class="aviso ${esc(tipo)}">
+          ${esc(mensagem)}
+        </div>`;
+    }
+
+    function limparAlerta() {
+      alerta.innerHTML = "";
+    }
+
+    function mostrarErroLogin(mensagem) {
+      document.getElementById("erro-login").innerHTML = `
+        <div class="aviso erro">
+          ${esc(mensagem)}
+        </div>`;
+    }
+
+    function limparErroLogin() {
+      document.getElementById("erro-login").innerHTML = "";
+    }
+
+    function mostrarLogin() {
+      usuarioAtual = null;
+      perfilAtual = null;
+      chamadoAtual = null;
+      carregamentoAtual++;
+
+      document.getElementById("tela-login").classList.remove("oculto");
+      document.getElementById("aplicacao").classList.add("oculto");
+      document.getElementById("area-usuario").classList.add("oculto");
+      document.getElementById("senha-login").value = "";
+
+      conteudo.innerHTML = "";
+      limparAlerta();
+    }
+
+    async function iniciarSessao(session) {
+      if (!session || !session.user) {
+        mostrarLogin();
+        return;
+      }
+
+      usuarioAtual = session.user;
+
+      const { data, error } = await cliente
+        .from("perfis")
+        .select("id, nome, funcao")
+        .eq("id", usuarioAtual.id)
+        .maybeSingle();
+
+      if (error || !data) {
+        console.error("Erro ao carregar perfil:", error);
+
+        await cliente.auth.signOut();
+        mostrarLogin();
+
+        mostrarErroLogin(
+          "Não foi possível carregar seu perfil. " +
+          "Peça à administração para verificar seu cadastro."
+        );
+
+        return;
+      }
+
+      perfilAtual = data;
+
+      document.getElementById("nome-conectado").textContent =
+        `${perfilAtual.nome} (${perfilAtual.funcao})`;
+
+      const suporte = perfilAtual.funcao === "suporte";
+
+      document.getElementById("menu-fila")
+        .classList.toggle("oculto", !suporte);
+
+      document.getElementById("menu-importar")
+        .classList.toggle("oculto", !suporte);
+
+      document.getElementById("menu-orientacoes")
+        .classList.toggle("oculto", !suporte);
+     document.getElementById("menu-analise")
+        .classList.toggle("oculto", !suporte);
+
+      document.getElementById("tela-login").classList.add("oculto");
+      document.getElementById("aplicacao").classList.remove("oculto");
+      document.getElementById("area-usuario").classList.remove("oculto");
+
+      limparErroLogin();
+      abrirPagina("chamados");
+    }
+
+    async function abrirPagina(pagina, id = null) {
+      if (!usuarioAtual || !perfilAtual) return;
+
+      const paginasSuporte = [
+  "fila",
+  "importar",
+  "orientacoes",
+  "editar-orientacao",
+  "analise"
+];
+
+      if (
+        paginasSuporte.includes(pagina) &&
+        perfilAtual.funcao !== "suporte"
+      ) {
+        mostrarAlerta("Página disponível apenas para o suporte.");
+        return;
+      }
+
+      paginaAtual = pagina;
+
+      if (pagina === "detalhes" && id) {
+        chamadoAtual = id;
+      }
+
+      document.querySelectorAll("nav button").forEach(botao => {
+        botao.classList.toggle(
+          "ativo",
+          botao.dataset.pagina === pagina ||
+          (
+            pagina === "formulario-chamado" &&
+            botao.dataset.pagina === "novo"
+          ) ||
+          (
+            pagina === "editar-orientacao" &&
+            botao.dataset.pagina === "orientacoes"
+          )
+        );
+      });
+
+      limparAlerta();
+      conteudo.innerHTML = "<p>Carregando...</p>";
+
+      const numeroCarregamento = ++carregamentoAtual;
+
+      try {
+        if (pagina === "chamados") {
+          await renderChamados(false, numeroCarregamento);
+
+        } else if (pagina === "fila") {
+          await renderChamados(true, numeroCarregamento);
+
+        } else if (pagina === "novo") {
+          renderConsultaInicial(numeroCarregamento);
+
+        } else if (pagina === "formulario-chamado") {
+          renderNovo(numeroCarregamento);
+
+        } else if (pagina === "detalhes") {
+          await renderDetalhes(numeroCarregamento);
+        
+        } else if (pagina === "analise") {
+          await renderAnalise(numeroCarregamento);
+
+        } else if (pagina === "importar") {
+          renderImportar(numeroCarregamento);
+
+        } else if (pagina === "orientacoes") {
+          await renderOrientacoes(numeroCarregamento);
+
+        } else if (pagina === "editar-orientacao") {
+          await renderEditarOrientacao(id, numeroCarregamento);
+
+        } else {
+          conteudo.innerHTML = "";
+          mostrarAlerta("Página não encontrada.");
+        }
+      } catch (erro) {
+        console.error("Erro ao carregar página:", erro);
+
+        if (numeroCarregamento !== carregamentoAtual) return;
+
+        conteudo.innerHTML = "";
+        mostrarAlerta(
+          "Não foi possível carregar os dados. " +
+          "Verifique sua conexão e tente novamente."
+        );
+      }
+
+      window.scrollTo(0, 0);
+    }
+
+    function tabela(lista) {
+      if (!lista.length) {
+        return '<p class="muted">Nenhum chamado encontrado.</p>';
+      }
+
+      return `
+        <div class="tabela">
+          <table>
+            <thead>
+              <tr>
+                <th>Número</th>
+                <th>Assunto</th>
+                <th>Unidade</th>
+                <th>Status</th>
+                <th>Data</th>
+                <th>Ação</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${lista.map(chamado => `
+                <tr>
+                  <td>#${esc(chamado.numero)}</td>
+                  <td>${esc(chamado.assunto)}</td>
+                  <td>${esc(chamado.unidade)}</td>
+                  <td>${esc(chamado.status)}</td>
+                  <td>${esc(formatarData(chamado.criado_em))}</td>
+                  <td>
+                    <button
+                      class="botao secundario"
+                      type="button"
+                      data-abrir="${esc(chamado.id)}"
+                    >
+                      Abrir
+                    </button>
+                  </td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>`;
+    }
+
+    async function renderChamados(todos, numeroCarregamento) {
+      let consulta = cliente
+        .from("chamados")
+        .select("id, numero, assunto, unidade, status, criado_em")
+        .order("criado_em", { ascending: false });
+
+      if (!todos) {
+        consulta = consulta.eq("solicitante_id", usuarioAtual.id);
+      }
+
+      const { data, error } = await consulta;
+
+      if (error) throw error;
+      if (numeroCarregamento !== carregamentoAtual) return;
+
+      const lista = data || [];
+
+      const abertos = lista.filter(
+        chamado => chamado.status !== "Concluído"
+      ).length;
+
+      const concluidos = lista.length - abertos;
+
+      conteudo.innerHTML = `
+        <h1>${todos ? "Todos os chamados" : "Meus chamados"}</h1>
+
+        <div class="card">
+          Total: <strong>${lista.length}</strong> ·
+          Em andamento: <strong>${abertos}</strong> ·
+          Concluídos: <strong>${concluidos}</strong>
+        </div>
+
+        <div class="card">
+          ${tabela(lista)}
+
+          <div class="acoes">
+            <button class="botao" type="button" data-ir="novo">
+              + Novo chamado
+            </button>
+          </div>
+        </div>`;
+    }
+
+    function normalizarBusca(texto) {
+      return String(texto || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase();
+    }
+
+    function termosDeBusca(texto) {
+      const ignorar = new Set([
+        "a", "o", "as", "os", "de", "do", "da",
+        "dos", "das", "e", "em", "para", "por",
+        "com", "um", "uma", "que", "qual",
+        "quais", "como", "meu", "minha", "sobre"
+      ]);
+
+      return [...new Set(
+        normalizarBusca(texto)
+          .split(/[^a-z0-9]+/)
+          .filter(termo => termo.length >= 3 && !ignorar.has(termo))
+      )];
+    }
+
+    async function pesquisarOrientacoes(pergunta) {
+      const termos = termosDeBusca(pergunta);
+
+      if (!termos.length) return [];
+
+      const { data, error } = await cliente
+        .from("orientacoes")
+        .select(
+          "id, pergunta, resposta, palavras_chave, " +
+          "fonte_nome, fonte_url, pagina"
+        )
+        .eq("status", "publicada");
+
+      if (error) throw error;
+
+      return (data || [])
+        .map(item => {
+          const texto = normalizarBusca(
+            `${item.pergunta} ${item.resposta} ${item.palavras_chave}`
+          );
+
+          const pontuacao = termos.reduce(
+            (total, termo) => total + (texto.includes(termo) ? 1 : 0),
+            0
+          );
+
+          return { ...item, pontuacao };
+        })
+        .filter(item => item.pontuacao > 0)
+        .sort((a, b) => b.pontuacao - a.pontuacao)
+        .slice(0, 5);
+    }
+
+    function linkSeguro(url) {
+      try {
+        const endereco = new URL(url);
+
+        return ["https:", "http:"].includes(endereco.protocol)
+          ? endereco.href
+          : "";
+      } catch {
+        return "";
+      }
+    }
+
+    function exibirResultadosOrientacoes(resultados) {
+      if (!resultados.length) {
+        return `
+          <p>Nenhuma orientação publicada foi encontrada.</p>
+          <p>Você pode reformular a busca ou continuar para o suporte.</p>`;
+      }
+
+      return resultados.map(item => {
+        const url = linkSeguro(item.fonte_url);
+
+        return `
+          <article class="historico">
+            <h3>${esc(item.pergunta)}</h3>
+            <p class="texto">${esc(item.resposta)}</p>
+            <p>
+              <small>
+                <strong>Fonte:</strong> ${esc(item.fonte_nome)}
+                ${item.pagina ? ` · ${esc(item.pagina)}` : ""}
+                ${url ? `
+                  · <a href="${esc(url)}"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                      Abrir fonte
+                    </a>
+                ` : ""}
+              </small>
+            </p>
+          </article>`;
+      }).join("");
+    }
+
+    function renderConsultaInicial(numeroCarregamento) {
+      if (numeroCarregamento !== carregamentoAtual) return;
+
+      conteudo.innerHTML = `
+        <h1>Consultar orientação</h1>
+
+        <div class="aviso">
+          Esta é uma busca por termos, não uma análise jurídica.
+          As orientações podem não cobrir seu caso. Não inclua dados
+          de pacientes ou outros dados pessoais na pergunta.
+        </div>
+
+        <form id="form-consulta" class="card">
+          <div class="campo">
+            <label for="pergunta-consulta">Qual é sua dúvida?</label>
+            <textarea id="pergunta-consulta" required></textarea>
+          </div>
+
+          <button class="botao" type="submit">
+            Buscar orientações
+          </button>
+        </form>
+
+        <div id="resultado-consulta" aria-live="polite"></div>`;
+
+      document.getElementById("form-consulta").addEventListener(
+        "submit",
+        async evento => {
+          evento.preventDefault();
+
+          const pergunta = document
+            .getElementById("pergunta-consulta")
+            .value.trim();
+
+          if (!pergunta) {
+            mostrarAlerta("Digite sua dúvida para pesquisar.");
+            return;
+          }
+
+          const botao = evento.currentTarget.querySelector("button");
+          const resultado = document.getElementById("resultado-consulta");
+
+          botao.disabled = true;
+          resultado.innerHTML = "<p>Pesquisando...</p>";
+          limparAlerta();
+
+          try {
+            const itens = await pesquisarOrientacoes(pergunta);
+
+            if (numeroCarregamento !== carregamentoAtual) return;
+
+            resultado.innerHTML = `
+              <div class="card">
+                <h2>Orientações encontradas</h2>
+                ${exibirResultadosOrientacoes(itens)}
+
+                <p class="muted">
+                  Confira a fonte e sua atualização. Estas informações
+                  não substituem uma análise jurídica.
+                </p>
+
+                <button id="continuar-chamado"
+                        class="botao"
+                        type="button">
+                  Não resolveu? Enviar ao suporte
+                </button>
+              </div>`;
+
+            document.getElementById("continuar-chamado")
+              .addEventListener("click", async () => {
+                await abrirPagina("formulario-chamado");
+
+                const campoDuvida = document.getElementById("duvida");
+                if (campoDuvida) campoDuvida.value = pergunta;
+              });
+          } catch (erro) {
+            console.error("Erro na busca de orientações:", erro);
+
+            if (numeroCarregamento !== carregamentoAtual) return;
+
+            resultado.innerHTML = `
+              <div class="card">
+                <p>Não foi possível consultar as orientações.</p>
+                <button id="continuar-erro"
+                        class="botao"
+                        type="button">
+                  Continuar para o suporte
+                </button>
+              </div>`;
+
+            document.getElementById("continuar-erro")
+              .addEventListener("click", async () => {
+                await abrirPagina("formulario-chamado");
+
+                const campoDuvida = document.getElementById("duvida");
+                if (campoDuvida) campoDuvida.value = pergunta;
+              });
+          } finally {
+            botao.disabled = false;
+          }
+        }
+      );
+    }
+
+    function renderNovo(numeroCarregamento) {
+      if (numeroCarregamento !== carregamentoAtual) return;
+
+      conteudo.innerHTML = `
+        <h1>Novo chamado</h1>
+
+        <div class="aviso">
+          Não inclua dados de pacientes ou outras informações sensíveis
+          até que a plataforma tenha sido avaliada para esse uso.
+        </div>
+
+        <form id="form-chamado" class="card">
+          <p><strong>Solicitante:</strong> ${esc(perfilAtual.nome)}</p>
+
+          <div class="campo">
+            <label for="unidade">Unidade *</label>
+            <select id="unidade" required>
+              <option value="">Selecione</option>
+              ${unidades.map(unidade => `
+                <option value="${esc(unidade)}">${esc(unidade)}</option>
+              `).join("")}
+            </select>
+          </div>
+
+          <div class="campo">
+            <label for="assunto">Assunto *</label>
+            <input id="assunto" maxlength="200" required>
+          </div>
+
+          <div class="campo">
+            <label for="duvida">Dúvida ou problema *</label>
+            <textarea id="duvida" required></textarea>
+          </div>
+
+          <div class="campo">
+            <label for="analise">O que já foi verificado? *</label>
+            <textarea id="analise" required></textarea>
+          </div>
+
+          <div class="campo">
+            <label for="prioridade">Prioridade</label>
+            <select id="prioridade">
+              <option>Baixa</option>
+              <option selected>Média</option>
+              <option>Alta</option>
+            </select>
+          </div>
+
+          <button id="criar-chamado" class="botao" type="submit">
+            Criar chamado
+          </button>
+        </form>`;
+
+      document.getElementById("form-chamado").addEventListener(
+        "submit",
+        async evento => {
+          evento.preventDefault();
+
+          const unidade = document.getElementById("unidade").value;
+          const assunto = document.getElementById("assunto").value.trim();
+          const duvida = document.getElementById("duvida").value.trim();
+          const analise = document.getElementById("analise").value.trim();
+          const prioridade = document.getElementById("prioridade").value;
+
+          if (!unidade || !assunto || !duvida || !analise) {
+            mostrarAlerta("Preencha todos os campos obrigatórios.");
+            return;
+          }
+
+          const botao = document.getElementById("criar-chamado");
+          botao.disabled = true;
+          limparAlerta();
+
+          try {
+            const { data, error } = await cliente
+              .from("chamados")
+              .insert({
+                solicitante_id: usuarioAtual.id,
+                unidade,
+                assunto,
+                duvida,
+                analise,
+                prioridade,
+                status: "Aguardando suporte"
+              })
+              .select("id")
+              .single();
+
+            if (error) throw error;
+
+            if (numeroCarregamento !== carregamentoAtual) return;
+
+            await abrirPagina("detalhes", data.id);
+            mostrarAlerta("Chamado criado com sucesso.", "sucesso");
+          } catch (erro) {
+            console.error("Erro ao criar chamado:", erro);
+
+            if (numeroCarregamento === carregamentoAtual) {
+              mostrarAlerta("Não foi possível criar o chamado.");
+              botao.disabled = false;
+            }
+          }
+        }
+      );
+    }
+
+    async function renderDetalhes(numeroCarregamento) {
+      if (!chamadoAtual) {
+        await abrirPagina("chamados");
+        return;
+      }
+
+      const { data: chamado, error: erroChamado } = await cliente
+        .from("chamados")
+        .select("*")
+        .eq("id", chamadoAtual)
+        .maybeSingle();
+
+      if (erroChamado) throw erroChamado;
+      if (numeroCarregamento !== carregamentoAtual) return;
+
+      if (!chamado) {
+        conteudo.innerHTML = "";
+        mostrarAlerta("Chamado não encontrado ou acesso não autorizado.");
+        return;
+      }
+
+      const { data: mensagens, error: erroMensagens } = await cliente
+        .from("historico_chamados")
+        .select("id, autor_id, texto, criado_em")
+        .eq("chamado_id", chamado.id)
+        .order("criado_em", { ascending: true });
+
+      if (erroMensagens) throw erroMensagens;
+      if (numeroCarregamento !== carregamentoAtual) return;
+
+      const { data: solicitante, error: erroSolicitante } = await cliente
+        .from("perfis")
+        .select("nome")
+        .eq("id", chamado.solicitante_id)
+        .maybeSingle();
+
+      if (erroSolicitante) throw erroSolicitante;
+      if (numeroCarregamento !== carregamentoAtual) return;
+
+      const suporte = perfilAtual.funcao === "suporte";
+      const historico = mensagens || [];
+
+      conteudo.innerHTML = `
+        <h1>Chamado #${esc(chamado.numero)}</h1>
+
+        <div class="card">
+          <h2>${esc(chamado.assunto)}</h2>
+          <p><strong>Solicitante:</strong>
+            ${esc(solicitante?.nome || "Solicitante")}</p>
+          <p><strong>Unidade:</strong> ${esc(chamado.unidade)}</p>
+          <p><strong>Prioridade:</strong> ${esc(chamado.prioridade)}</p>
+          <p><strong>Status:</strong> ${esc(chamado.status)}</p>
+          <p><strong>Criado em:</strong>
+            ${esc(formatarData(chamado.criado_em))}</p>
+
+          <h3>Dúvida ou problema</h3>
+          <p class="texto">${esc(chamado.duvida)}</p>
+
+          <h3>Verificações realizadas</h3>
+          <p class="texto">${esc(chamado.analise)}</p>
+        </div>
+
+        ${suporte ? `
+          <form id="form-status" class="card">
+            <h2>Alterar status</h2>
+
+            <div class="campo">
+              <label for="status-chamado">Status</label>
+              <select id="status-chamado">
+                ${statusPermitidos.map(status => `
+                  <option value="${esc(status)}"
+                    ${status === chamado.status ? "selected" : ""}>
+                    ${esc(status)}
+                  </option>
+                `).join("")}
+              </select>
+            </div>
+
+            <button class="botao" type="submit">Salvar status</button>
+          </form>
+        ` : ""}
+
+        <div class="card">
+          <h2>Histórico de mensagens</h2>
+
+          <p class="muted">
+            As mensagens são visíveis ao solicitante e ao suporte.
+          </p>
+
+          ${historico.length ? historico.map(item => `
+            <div class="historico">
+              <small>
+                ${esc(formatarData(item.criado_em))}
+                ${item.autor_id === usuarioAtual.id ? " · Você" : ""}
+              </small>
+              <div class="texto">${esc(item.texto)}</div>
+            </div>
+          `).join("") : '<p class="muted">Nenhuma mensagem ainda.</p>'}
+        </div>
+
+        <form id="form-mensagem" class="card">
+          <h2>Enviar mensagem</h2>
+
+          <div class="campo">
+            <label for="mensagem">Mensagem *</label>
+            <textarea id="mensagem" required></textarea>
+          </div>
+
+          <button class="botao" type="submit">Enviar</button>
+        </form>
+
+        <button class="botao secundario"
+                type="button"
+                data-ir="${suporte ? "fila" : "chamados"}">
+          Voltar
+        </button>`;
+
+      const formStatus = document.getElementById("form-status");
+
+      if (formStatus) {
+        formStatus.addEventListener("submit", async evento => {
+          evento.preventDefault();
+
+          const status = document.getElementById("status-chamado").value;
+          const botao = formStatus.querySelector("button");
+
+          botao.disabled = true;
+          limparAlerta();
+
+          try {
+            const { data, error } = await cliente
+              .from("chamados")
+              .update({ status })
+              .eq("id", chamado.id)
+              .select("id")
+              .maybeSingle();
+
+            if (error || !data) {
+              throw error || new Error("Atualização não autorizada.");
+            }
+
+            if (numeroCarregamento !== carregamentoAtual) return;
+
+            await abrirPagina("detalhes", chamado.id);
+            mostrarAlerta("Status atualizado.", "sucesso");
+          } catch (erro) {
+            console.error("Erro ao atualizar status:", erro);
+
+            if (numeroCarregamento === carregamentoAtual) {
+              mostrarAlerta("Não foi possível alterar o status.");
+              botao.disabled = false;
+            }
+          }
+        });
+      }
+
+      document.getElementById("form-mensagem").addEventListener(
+        "submit",
+        async evento => {
+          evento.preventDefault();
+
+          const texto = document.getElementById("mensagem").value.trim();
+
+          if (!texto) {
+            mostrarAlerta("Digite uma mensagem antes de enviar.");
+            return;
+          }
+
+          const botao = evento.currentTarget.querySelector("button");
+          botao.disabled = true;
+          limparAlerta();
+
+          try {
+            const { error } = await cliente
+              .from("historico_chamados")
+              .insert({
+                chamado_id: chamado.id,
+                autor_id: usuarioAtual.id,
+                texto
+              });
+
+            if (error) throw error;
+            if (numeroCarregamento !== carregamentoAtual) return;
+
+            await abrirPagina("detalhes", chamado.id);
+            mostrarAlerta("Mensagem enviada.", "sucesso");
+          } catch (erro) {
+            console.error("Erro ao enviar mensagem:", erro);
+
+            if (numeroCarregamento === carregamentoAtual) {
+              mostrarAlerta("Não foi possível enviar a mensagem.");
+              botao.disabled = false;
+            }
+          }
+        }
+      );
+    }
+
+    /*
+      O arquivo PDF é processado localmente no navegador.
+      Somente os campos enviados no formulário são salvos no Supabase.
+    */
+    function renderImportar(numeroCarregamento) {
+      if (numeroCarregamento !== carregamentoAtual) return;
+
+      conteudo.innerHTML = `
+        <h1>Importar PDF</h1>
+
+        <div class="aviso">
+          O PDF é lido neste navegador e não é enviado como arquivo.
+          O texto salvo na orientação será enviado ao Supabase.
+          Confira a extração, a fonte e a validade do conteúdo antes de publicar.
+          PDFs digitalizados como imagem precisam de OCR.
+        </div>
+
+        <div class="card">
+          <h2>1. Extrair texto</h2>
+
+          <div class="campo">
+            <label for="arquivo-pdf">Arquivo PDF</label>
+            <input id="arquivo-pdf" type="file" accept=".pdf,application/pdf">
+          </div>
+
+          <button id="extrair-pdf" class="botao" type="button">
+            Extrair texto do PDF
+          </button>
+
+          <p id="progresso-pdf" class="muted" aria-live="polite"></p>
+
+          <div class="campo">
+            <label for="texto-pdf">Texto extraído</label>
+            <textarea
+              id="texto-pdf"
+              class="texto-extraido"
+              readonly
+              placeholder="O texto aparecerá aqui."
+            ></textarea>
+          </div>
+
+          <p class="muted">
+            Selecione um trecho do texto e clique no botão abaixo.
+            Você poderá editar a resposta antes de salvar.
+          </p>
+
+          <button id="usar-trecho" class="botao secundario" type="button">
+            Usar trecho selecionado como resposta
+          </button>
+        </div>
+
+        <form id="form-orientacao-nova" class="card">
+          <h2>2. Cadastrar orientação pendente</h2>
+
+          <div class="campo">
+            <label for="nova-pergunta">Pergunta ou assunto *</label>
+            <input id="nova-pergunta" required>
+          </div>
+
+          <div class="campo">
+            <label for="nova-resposta">Resposta *</label>
+            <textarea id="nova-resposta" required></textarea>
+          </div>
+
+          <div class="campo">
+            <label for="novas-palavras">Palavras-chave</label>
+            <input id="novas-palavras" placeholder="Ex.: enfermagem, piso, jornada">
+          </div>
+
+          <div class="campo">
+            <label for="nova-fonte">Nome da fonte *</label>
+            <input id="nova-fonte" required>
+          </div>
+
+          <div class="campo">
+            <label for="nova-url">Link da fonte</label>
+            <input id="nova-url" type="url" placeholder="https://...">
+          </div>
+
+          <div class="campo">
+            <label for="nova-pagina">Página ou referência</label>
+            <input id="nova-pagina" placeholder="Ex.: página 12">
+          </div>
+
+          <button class="botao" type="submit">
+            Salvar como pendente
+          </button>
+        </form>`;
+
+      const campoTexto = document.getElementById("texto-pdf");
+      const progresso = document.getElementById("progresso-pdf");
+
+      document.getElementById("extrair-pdf").addEventListener(
+        "click",
+        async evento => {
+          const arquivo = document.getElementById("arquivo-pdf").files[0];
+
+          if (!arquivo) {
+            mostrarAlerta("Selecione um arquivo PDF.");
+            return;
+          }
+
+          if (!window.pdfjsLib) {
+            mostrarAlerta(
+              "A biblioteca de leitura de PDF não carregou. " +
+              "Verifique sua conexão."
+            );
+            return;
+          }
+
+          const botao = evento.currentTarget;
+          botao.disabled = true;
+          campoTexto.value = "";
+          progresso.textContent = "Lendo arquivo...";
+          limparAlerta();
+
+          let documento = null;
+
+          try {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = PDF_WORKER_URL;
+
+            const bytes = await arquivo.arrayBuffer();
+            const tarefa = pdfjsLib.getDocument({ data: bytes });
+            documento = await tarefa.promise;
+
+            const paginas = [];
+
+            for (let numero = 1; numero <= documento.numPages; numero++) {
+              if (numeroCarregamento !== carregamentoAtual) return;
+
+              progresso.textContent =
+                `Extraindo página ${numero} de ${documento.numPages}...`;
+
+              const pagina = await documento.getPage(numero);
+              const texto = await pagina.getTextContent();
+
+              let conteudoPagina = "";
+
+              for (const item of texto.items) {
+                if (typeof item.str !== "string") continue;
+
+                conteudoPagina += item.str;
+                conteudoPagina += item.hasEOL ? "\n" : " ";
+              }
+
+              paginas.push(
+                `--- Página ${numero} ---\n${conteudoPagina.trim()}`
+              );
+
+              pagina.cleanup();
+            }
+
+            if (numeroCarregamento !== carregamentoAtual) return;
+
+            const resultado = paginas.join("\n\n");
+            const temTexto = paginas.some(pagina =>
+              pagina.replace(/^--- Página \d+ ---\n/, "").trim().length > 0
+            );
+
+            campoTexto.value = resultado;
+            progresso.textContent =
+              `Extração concluída: ${documento.numPages} página(s).`;
+
+            if (!temTexto) {
+              mostrarAlerta(
+                "Nenhum texto foi encontrado. O PDF pode ser composto " +
+                "por imagens e precisar de OCR."
+              );
+            } else {
+              mostrarAlerta(
+                "Texto extraído. Confira se a leitura ficou correta.",
+                "sucesso"
+              );
+            }
+          } catch (erro) {
+            console.error("Erro ao extrair PDF:", erro);
+
+            if (numeroCarregamento === carregamentoAtual) {
+              progresso.textContent = "";
+              mostrarAlerta(
+                "Não foi possível ler o PDF. Verifique se o arquivo " +
+                "está íntegro ou protegido por senha."
+              );
+            }
+          } finally {
+            if (documento) {
+              try {
+                await documento.destroy();
+              } catch (erro) {
+                console.error("Erro ao liberar PDF:", erro);
+              }
+            }
+
+            botao.disabled = false;
+          }
+        }
+      );
+
+      document.getElementById("usar-trecho").addEventListener(
+        "click",
+        () => {
+          const inicio = campoTexto.selectionStart;
+          const fim = campoTexto.selectionEnd;
+          const trecho = campoTexto.value.slice(inicio, fim).trim();
+
+          if (!trecho) {
+            mostrarAlerta(
+              "Selecione um trecho no campo de texto extraído."
+            );
+            return;
+          }
+
+          document.getElementById("nova-resposta").value = trecho;
+          limparAlerta();
+          document.getElementById("nova-resposta").focus();
+        }
+      );
+
+      document.getElementById("form-orientacao-nova").addEventListener(
+        "submit",
+        async evento => {
+          evento.preventDefault();
+
+          const pergunta = document.getElementById("nova-pergunta").value.trim();
+          const resposta = document.getElementById("nova-resposta").value.trim();
+          const palavrasChave = document.getElementById("novas-palavras").value.trim();
+          const fonteNome = document.getElementById("nova-fonte").value.trim();
+          const fonteUrl = document.getElementById("nova-url").value.trim();
+          const pagina = document.getElementById("nova-pagina").value.trim();
+
+          if (!pergunta || !resposta || !fonteNome) {
+            mostrarAlerta("Preencha pergunta, resposta e nome da fonte.");
+            return;
+          }
+
+          if (fonteUrl && !linkSeguro(fonteUrl)) {
+            mostrarAlerta("Informe um link válido começando com http ou https.");
+            return;
+          }
+
+          const botao = evento.currentTarget.querySelector("button");
+          botao.disabled = true;
+          limparAlerta();
+
+          try {
+            const { error } = await cliente
+              .from("orientacoes")
+              .insert({
+                pergunta,
+                resposta,
+                palavras_chave: palavrasChave,
+                fonte_nome: fonteNome,
+                fonte_url: fonteUrl || null,
+                pagina: pagina || null,
+                status: "pendente"
+              });
+
+            if (error) throw error;
+            if (numeroCarregamento !== carregamentoAtual) return;
+
+            document.getElementById("nova-pergunta").value = "";
+            document.getElementById("nova-resposta").value = "";
+            document.getElementById("novas-palavras").value = "";
+            document.getElementById("nova-pagina").value = "";
+
+            mostrarAlerta(
+              "Orientação salva como pendente. Revise antes de publicar.",
+              "sucesso"
+            );
+          } catch (erro) {
+            console.error("Erro ao cadastrar orientação:", erro);
+
+            if (numeroCarregamento === carregamentoAtual) {
+              mostrarAlerta(
+                "Não foi possível salvar a orientação. " +
+                "Confira as permissões da tabela no Supabase."
+              );
+            }
+          } finally {
+            botao.disabled = false;
+          }
+        }
+      );
+    }
+
+    async function renderOrientacoes(numeroCarregamento) {
+      const { data, error } = await cliente
+        .from("orientacoes")
+        .select(
+          "id, pergunta, fonte_nome, pagina, status, criado_em, revisado_em"
+        )
+        .order("criado_em", { ascending: false });
+
+      if (error) throw error;
+      if (numeroCarregamento !== carregamentoAtual) return;
+
+      const itens = data || [];
+
+      conteudo.innerHTML = `
+        <h1>Gerenciar orientações</h1>
+
+        <div class="aviso">
+          Revise o texto, a fonte, a página e a vigência das informações
+          antes de publicar. Apenas orientações publicadas aparecem na busca.
+        </div>
+
+        <div class="card">
+          ${itens.length ? `
+            <div class="tabela">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Pergunta</th>
+                    <th>Fonte</th>
+                    <th>Status</th>
+                    <th>Criada em</th>
+                    <th>Ação</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${itens.map(item => `
+                    <tr>
+                      <td>${esc(item.pergunta)}</td>
+                      <td>
+                        ${esc(item.fonte_nome)}
+                        ${item.pagina ? ` · ${esc(item.pagina)}` : ""}
+                      </td>
+                      <td>${esc(item.status)}</td>
+                      <td>${esc(formatarData(item.criado_em))}</td>
+                      <td>
+                        <button
+                          class="botao secundario"
+                          type="button"
+                          data-orientacao="${esc(item.id)}"
+                        >
+                          Revisar
+                        </button>
+                      </td>
+                    </tr>
+                  `).join("")}
+                </tbody>
+              </table>
+            </div>
+          ` : '<p class="muted">Nenhuma orientação encontrada.</p>'}
+
+          <div class="acoes">
+            <button class="botao" type="button" data-ir="importar">
+              Importar PDF
+            </button>
+          </div>
+        </div>`;
+    }
+
+    async function renderEditarOrientacao(id, numeroCarregamento) {
+      if (!id) {
+        await abrirPagina("orientacoes");
+        return;
+      }
+
+      const { data: item, error } = await cliente
+        .from("orientacoes")
+        .select(
+          "id, pergunta, resposta, palavras_chave, fonte_nome, " +
+          "fonte_url, pagina, status, revisado_em"
+        )
+        .eq("id", id)
+        .maybeSingle();
+
+      if (error) throw error;
+      if (numeroCarregamento !== carregamentoAtual) return;
+
+      if (!item) {
+        conteudo.innerHTML = "";
+        mostrarAlerta("Orientação não encontrada ou acesso não autorizado.");
+        return;
+      }
+
+      conteudo.innerHTML = `
+        <h1>Revisar orientação</h1>
+
+        <div class="aviso">
+          Confira a resposta com a fonte original e confirme se a informação
+          continua válida. Ao salvar como publicada, ela aparecerá na busca.
+        </div>
+
+        <form id="form-editar-orientacao" class="card">
+          <div class="campo">
+            <label for="editar-pergunta">Pergunta ou assunto *</label>
+            <input id="editar-pergunta" value="${esc(item.pergunta)}" required>
+          </div>
+
+          <div class="campo">
+            <label for="editar-resposta">Resposta *</label>
+            <textarea id="editar-resposta" required>${esc(item.resposta)}</textarea>
+          </div>
+
+          <div class="campo">
+            <label for="editar-palavras">Palavras-chave</label>
+            <input id="editar-palavras" value="${esc(item.palavras_chave)}">
+          </div>
+
+          <div class="campo">
+            <label for="editar-fonte">Nome da fonte *</label>
+            <input id="editar-fonte" value="${esc(item.fonte_nome)}" required>
+          </div>
+
+          <div class="campo">
+            <label for="editar-url">Link da fonte</label>
+            <input id="editar-url" type="url" value="${esc(item.fonte_url)}">
+          </div>
+
+          <div class="campo">
+            <label for="editar-pagina">Página ou referência</label>
+            <input id="editar-pagina" value="${esc(item.pagina)}">
+          </div>
+
+          <div class="campo">
+            <label for="editar-status">Status</label>
+            <select id="editar-status">
+              <option value="pendente"
+                ${item.status === "pendente" ? "selected" : ""}>
+                Pendente
+              </option>
+              <option value="publicada"
+                ${item.status === "publicada" ? "selected" : ""}>
+                Publicada
+              </option>
+            </select>
+          </div>
+
+          <p class="muted">
+            Última revisão registrada:
+            ${esc(formatarData(item.revisado_em) || "não informada")}
+          </p>
+
+          <div class="acoes">
+            <button class="botao" type="submit">
+              Salvar revisão
+            </button>
+
+            <button class="botao secundario"
+                    type="button"
+                    data-ir="orientacoes">
+              Voltar
+            </button>
+          </div>
+        </form>`;
+
+      document.getElementById("form-editar-orientacao").addEventListener(
+        "submit",
+        async evento => {
+          evento.preventDefault();
+
+          const pergunta = document.getElementById("editar-pergunta").value.trim();
+          const resposta = document.getElementById("editar-resposta").value.trim();
+          const palavrasChave = document.getElementById("editar-palavras").value.trim();
+          const fonteNome = document.getElementById("editar-fonte").value.trim();
+          const fonteUrl = document.getElementById("editar-url").value.trim();
+          const pagina = document.getElementById("editar-pagina").value.trim();
+          const status = document.getElementById("editar-status").value;
+
+          if (!pergunta || !resposta || !fonteNome) {
+            mostrarAlerta("Preencha pergunta, resposta e nome da fonte.");
+            return;
+          }
+
+          if (fonteUrl && !linkSeguro(fonteUrl)) {
+            mostrarAlerta("Informe um link válido começando com http ou https.");
+            return;
+          }
+
+          if (!["pendente", "publicada"].includes(status)) {
+            mostrarAlerta("Status de orientação inválido.");
+            return;
+          }
+
+          const botao = evento.currentTarget.querySelector(
+            'button[type="submit"]'
+          );
+
+          botao.disabled = true;
+          limparAlerta();
+
+          try {
+            const { data, error } = await cliente
+              .from("orientacoes")
+              .update({
+                pergunta,
+                resposta,
+                palavras_chave: palavrasChave,
+                fonte_nome: fonteNome,
+                fonte_url: fonteUrl || null,
+                pagina: pagina || null,
+                status,
+                revisado_em: new Date().toISOString()
+              })
+              .eq("id", item.id)
+              .select("id")
+              .maybeSingle();
+
+            if (error || !data) {
+              throw error || new Error("Atualização não autorizada.");
+            }
+
+            if (numeroCarregamento !== carregamentoAtual) return;
+
+            await abrirPagina("orientacoes");
+            mostrarAlerta("Orientação atualizada.", "sucesso");
+          } catch (erro) {
+            console.error("Erro ao atualizar orientação:", erro);
+
+            if (numeroCarregamento === carregamentoAtual) {
+              mostrarAlerta(
+                "Não foi possível atualizar a orientação. " +
+                "Confira as permissões da tabela no Supabase."
+              );
+              botao.disabled = false;
+            }
+          }
+        }
+      );
+    }
+
+    document.getElementById("form-login").addEventListener(
+      "submit",
+      async evento => {
+        evento.preventDefault();
+
+        if (!cliente) {
+          mostrarErroLogin("Não foi possível carregar o Supabase.");
+          return;
+        }
+
+        const email = document.getElementById("email-login").value.trim();
+        const senha = document.getElementById("senha-login").value;
+        const botao = document.getElementById("botao-entrar");
+
+        botao.disabled = true;
+        limparErroLogin();
+
+        try {
+          const { data, error } = await cliente.auth.signInWithPassword({
+            email,
+            password: senha
+          });
+
+          if (error) {
+            mostrarErroLogin(
+              "Não foi possível entrar. Confira seu e-mail e sua senha."
+            );
+            return;
+          }
+
+          await iniciarSessao(data.session);
+        } catch (erro) {
+          console.error("Erro ao entrar:", erro);
+          mostrarErroLogin(
+            "Não foi possível entrar. Verifique sua conexão."
+          );
+        } finally {
+          botao.disabled = false;
+        }
+      }
+    );
+
+    document.getElementById("botao-sair").addEventListener(
+      "click",
+      async () => {
+        try {
+          const { error } = await cliente.auth.signOut();
+
+          if (error) throw error;
+
+          mostrarLogin();
+        } catch (erro) {
+          console.error("Erro ao sair:", erro);
+          mostrarAlerta("Não foi possível sair. Tente novamente.");
+        }
+      }
+    );
+
+    document.addEventListener("click", evento => {
+      const botao = evento.target.closest("button");
+      if (!botao || !usuarioAtual) return;
+
+      if (botao.dataset.pagina) {
+        abrirPagina(botao.dataset.pagina);
+      } else if (botao.dataset.ir) {
+        abrirPagina(botao.dataset.ir);
+      } else if (botao.dataset.abrir) {
+        abrirPagina("detalhes", botao.dataset.abrir);
+      } else if (botao.dataset.orientacao) {
+        abrirPagina("editar-orientacao", botao.dataset.orientacao);
+      }
+    });
+
+    async function iniciarAplicacao() {
+      if (!window.supabase) {
+        mostrarErroLogin(
+          "A biblioteca do Supabase não carregou. Verifique sua conexão."
+        );
+        return;
+      }
+
+      cliente = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLIC_KEY
+      );
+
+      try {
+        const { data, error } = await cliente.auth.getSession();
+
+        if (error) throw error;
+
+        if (data.session) {
+          await iniciarSessao(data.session);
+        } else {
+          mostrarLogin();
+        }
+      } catch (erro) {
+        console.error("Erro ao recuperar sessão:", erro);
+        mostrarLogin();
+        mostrarErroLogin("Não foi possível recuperar sua sessão.");
+      }
+    }
+// Categorias iniciais: podem ser ajustadas pelo suporte.
+const temasQualificacao = [
+  {
+    nome: "Legislação trabalhista e jornada",
+    termos: [
+      "clt", "legislacao trabalhista", "direito trabalhista",
+      "jornada", "escala", "hora extra", "ferias",
+      "banco de horas", "folga"
+    ],
+    plataformas: [
+      { nome: "Escola Virtual Gov", url: "https://www.escolavirtual.gov.br/" }
+    ]
+  },
+  {
+    nome: "Piso salarial da enfermagem",
+    termos: [
+      "piso salarial", "piso da enfermagem",
+      "piso enfermagem", "salario enfermagem"
+    ],
+    plataformas: [
+      { nome: "UNA-SUS", url: "https://www.unasus.gov.br/" },
+      { nome: "AVASUS", url: "https://avasus.ufrn.br/" }
+    ]
+  },
+  {
+    nome: "Gestão e atendimento",
+    termos: [
+      "atendimento", "comunicacao", "gestao",
+      "lideranca", "equipe", "conflito"
+    ],
+    plataformas: [
+      { nome: "Escola Virtual Gov", url: "https://www.escolavirtual.gov.br/" }
+    ]
+  },
+  {
+    nome: "Saúde e segurança no trabalho",
+    termos: [
+      "seguranca do trabalho", "saude do trabalhador",
+      "acidente de trabalho", "epi", "ergonomia",
+      "risco ocupacional"
+    ],
+    plataformas: [
+      { nome: "UNA-SUS", url: "https://www.unasus.gov.br/" },
+      { nome: "AVASUS", url: "https://avasus.ufrn.br/" }
+    ]
+  }
+];
+
+function classificarTemas(chamado) {
+  const texto = normalizarBusca(
+    `${chamado.assunto || ""} ${chamado.duvida || ""}`
+  );
+
+  return temasQualificacao.filter(tema =>
+    tema.termos.some(termo => texto.includes(normalizarBusca(termo)))
+  );
+}
+
+async function buscarChamadosParaAnalise(inicio, fim) {
+  // Busca em lotes, respeitando o limite de linhas por resposta.
+  const tamanhoLote = 500;
+  const registros = [];
+
+  for (let deslocamento = 0; ; deslocamento += tamanhoLote) {
+    let consulta = cliente
+      .from("chamados")
+      .select("id, unidade, assunto, duvida, status, criado_em")
+      .order("criado_em", { ascending: false })
+      .order("id", { ascending: false })
+      .range(deslocamento, deslocamento + tamanhoLote - 1);
+
+    // Datas são interpretadas no fuso local do navegador.
+    if (inicio) {
+      consulta = consulta.gte(
+        "criado_em",
+        new Date(`${inicio}T00:00:00`).toISOString()
+      );
+    }
+
+    if (fim) {
+      const diaSeguinte = new Date(`${fim}T00:00:00`);
+      diaSeguinte.setDate(diaSeguinte.getDate() + 1);
+
+      consulta = consulta.lt("criado_em", diaSeguinte.toISOString());
+    }
+
+    const { data, error } = await consulta;
+
+    if (error) throw error;
+
+    registros.push(...(data || []));
+
+    if (!data || data.length < tamanhoLote) break;
+  }
+
+  return registros;
+}
+
+function gerarAnalise(chamados) {
+  const unidades = new Map();
+
+  const totaisTemas = new Map(
+    temasQualificacao.map(tema => [tema.nome, 0])
+  );
+
+  let semTema = 0;
+
+  for (const chamado of chamados) {
+    const unidade = (chamado.unidade || "Não informada").trim();
+
+    unidades.set(unidade, (unidades.get(unidade) || 0) + 1);
+
+    const temas = classificarTemas(chamado);
+
+    if (!temas.length) {
+      semTema++;
+    }
+
+    for (const tema of temas) {
+      totaisTemas.set(tema.nome, totaisTemas.get(tema.nome) + 1);
+    }
+  }
+
+  return {
+    ranking: [...unidades.entries()].sort(
+      (a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "pt-BR")
+    ),
+    temas: temasQualificacao
+      .map(tema => ({
+        ...tema,
+        total: totaisTemas.get(tema.nome)
+      }))
+      .filter(tema => tema.total > 0)
+      .sort((a, b) => b.total - a.total),
+    semTema
+  };
+}
+
+async function renderAnalise(numeroCarregamento) {
+  if (perfilAtual?.funcao !== "suporte") {
+    conteudo.innerHTML = "";
+    mostrarAlerta("Página disponível apenas para o suporte.");
+    return;
+  }
+
+  conteudo.innerHTML = `
+    <h1>Análise e Qualificação</h1>
+
+    <div class="aviso">
+      A classificação usa palavras-chave e pode conter erros.
+      Um chamado pode aparecer em mais de um tema. Os links levam a
+      plataformas de cursos, não a cursos específicos: confira a
+      disponibilidade, a gratuidade e as condições do certificado.
+    </div>
+
+    <form id="filtro-analise" class="card">
+      <h2>Filtrar por data de criação</h2>
+
+      <div class="campo">
+        <label for="analise-inicio">Data inicial</label>
+        <input id="analise-inicio" type="date">
+      </div>
+
+      <div class="campo">
+        <label for="analise-fim">Data final</label>
+        <input id="analise-fim" type="date">
+      </div>
+
+      <button class="botao" type="submit">Aplicar filtro</button>
+    </form>
+
+    <div id="resultado-analise" aria-live="polite">
+      <p>Carregando análise...</p>
+    </div>`;
+
+  const formulario = document.getElementById("filtro-analise");
+  const resultado = document.getElementById("resultado-analise");
+  let ultimaConsulta = 0;
+
+  async function atualizarAnalise() {
+    const inicio = document.getElementById("analise-inicio").value;
+    const fim = document.getElementById("analise-fim").value;
+
+    if (inicio && fim && inicio > fim) {
+      mostrarAlerta("A data inicial não pode ser posterior à data final.");
+      return;
+    }
+
+    limparAlerta();
+
+    const consultaAtual = ++ultimaConsulta;
+    const botao = formulario.querySelector('button[type="submit"]');
+
+    botao.disabled = true;
+    resultado.innerHTML = "<p>Carregando análise...</p>";
+
+    try {
+      const chamados = await buscarChamadosParaAnalise(inicio, fim);
+
+      if (
+        numeroCarregamento !== carregamentoAtual ||
+        consultaAtual !== ultimaConsulta
+      ) return;
+
+      const analise = gerarAnalise(chamados);
+
+      const rankingHtml = analise.ranking.length
+        ? `
+          <div class="tabela">
+            <table>
+              <thead>
+                <tr>
+                  <th>Posição</th>
+                  <th>Unidade</th>
+                  <th>Chamados</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${analise.ranking.map(([unidade, total], indice) => `
+                  <tr>
+                    <td>${indice + 1}º</td>
+                    <td>${esc(unidade)}</td>
+                    <td>${total}</td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>`
+        : "<p>Nenhum chamado encontrado no período.</p>";
+
+      const temasHtml = analise.temas.length
+        ? analise.temas.map(tema => `
+            <article class="historico">
+              <h3>${esc(tema.nome)} — ${tema.total} chamado(s)</h3>
+              <p>Onde procurar cursos sobre esse tema:</p>
+              <ul>
+                ${tema.plataformas.map(plataforma => `
+                  <li>
+                    <a href="${esc(plataforma.url)}"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                      ${esc(plataforma.nome)}
+                    </a>
+                  </li>
+                `).join("")}
+              </ul>
+            </article>
+          `).join("")
+        : "<p>Nenhum tema foi identificado pelas palavras-chave atuais.</p>";
+
+      resultado.innerHTML = `
+        <div class="card">
+          <h2>Ranking das unidades</h2>
+          <p>Total de chamados no período: <strong>${chamados.length}</strong></p>
+          ${rankingHtml}
+        </div>
+
+        <div class="card">
+          <h2>Principais dúvidas e qualificação</h2>
+          ${temasHtml}
+          <p class="muted">
+            Chamados sem tema identificado: ${analise.semTema}.
+          </p>
+        </div>`;
+    } catch (erro) {
+      console.error("Erro ao carregar análise:", erro);
+
+      if (numeroCarregamento === carregamentoAtual) {
+        resultado.innerHTML = "";
+        mostrarAlerta(
+          "Não foi possível carregar a análise. Verifique a conexão " +
+          "e as permissões do perfil de suporte."
+        );
+      }
+    } finally {
+      botao.disabled = false;
+    }
+  }
+
+  formulario.addEventListener("submit", evento => {
+    evento.preventDefault();
+    atualizarAnalise();
+  });
+
+  await atualizarAnalise();
+}
+
+    iniciarAplicacao();
+  </script>
+</body>
+</html>
